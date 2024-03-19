@@ -1,0 +1,20 @@
+{
+  "name": "fllaf-language",
+  "version": "1.0.0",
+  "description": "My own language",
+  "main": "src/build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/scripts/index.ts",
+    "build": "tsc"
+  },
+  "author": "kazuha046",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2"
+  },
+  "bin": {
+    "fllaf": "src/build/index.js"
+  }
+}

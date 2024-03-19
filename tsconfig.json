@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "src/build",
+    "strict": true,
+    "target": "ES5",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
