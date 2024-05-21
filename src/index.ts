@@ -16,7 +16,7 @@ function startInterpreter(code: string) {
 
 const filename = process.argv[2];
 let code: string;
-const version = "1.0.0";
+const version = "1.1.0";
 
 if (filename) {
     if (filename === '-V' || filename === '--version' || filename === '-v') {
@@ -34,6 +34,8 @@ if (filename) {
     code = fs.readFileSync(path.resolve(fileWithExtension), 'utf-8');
     startInterpreter(code);
 } else {
+    console.log("Fllaf Language Terminal\n");
+
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
