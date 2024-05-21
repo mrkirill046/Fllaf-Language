@@ -32,19 +32,22 @@ SolidCompression=yes
 WizardStyle=modern
 ChangesEnvironment=yes
 
+[Dirs]
+Name: "{pf}\fllaf"; Permissions: everyone-modify
+
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "addpath"; Description: "Add application to PATH environment variable"; GroupDescription: "Additional tasks:";
 
 [Files]
-Source: "C:\Users\Kirill\OneDrive\Документы\JavaScript, TypeScript\fllaf-language\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "C:\Users\Kirill\OneDrive\Документы\JavaScript, TypeScript\fllaf-language\inno-setup\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Kirill\OneDrive\Документы\JavaScript, TypeScript\fllaf-language\inno-setup\node-v20.11.1-x64.msi"; DestDir: "{tmp}"; Flags: deleteafterinstall;
 
 [Registry]
-Root: HKLM; Subkey: "System\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{olddata};{app}"
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{olddata};{pf}\fllaf"; Tasks: addpath
 Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
 Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
@@ -56,6 +59,13 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
+[Code]
+function returnFalse(): Boolean;
+begin
+  Result := False;
+end;
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{tmp}\node-v20.11.1-x64.msi"; Parameters: "/passive /norestart"; Check: returnFalse();
 

@@ -2,9 +2,8 @@
   "name": "fllaf-language",
   "version": "1.0.0",
   "description": "My own language",
-  "main": "src/build/index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/scripts/index.ts",
     "build": "tsc"
   },
@@ -15,6 +14,17 @@
     "ts-node": "^10.9.2"
   },
   "bin": {
-    "fllaf": "src/build/index.js"
+    "fllaf": "build/index.js"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js",
+    "targets": [
+      "node14-win-x64"
+    ],
+    "outputPath": "inno-setup",
+    "options": [
+      "--public",
+      "--public-packages=*"
+    ]
   }
 }
