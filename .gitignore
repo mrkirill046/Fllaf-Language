@@ -2,9 +2,7 @@
 
 # dependencies
 /node_modules
-/inno-setup/Fllaf Language Setup.exe
-/inno-setup/fllaf-language.exe
-/inno-setup/node-v20.11.1-x64.msi
+/inno-setup
 
 # testing
 /coverage
