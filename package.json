@@ -4,7 +4,7 @@
   "description": "My own language",
   "main": "build/index.js",
   "scripts": {
-    "start": "nodemon src/scripts/index.ts",
+    "start": "fllaf tests/test",
     "build": "tsc"
   },
   "author": "kazuha046",

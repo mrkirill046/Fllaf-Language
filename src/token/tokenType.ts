@@ -9,14 +9,15 @@ export default class TokenType {
 }
 
 export const tokenTypeList = {
-    'NUMBER': new TokenType('NUMBER', '[0-9]*'),
+    'NUMBER': new TokenType('NUMBER', '[0-9]+'),
     'LOG': new TokenType('LOG', 'log'),
-    'VARIABLE': new TokenType('VARIABLE', '[a-z]*[а-я]*'),
+    'VARIABLE': new TokenType('VARIABLE', '[a-zA-Z]*'),
     'SEMICOLON': new TokenType('SEMICOLON', ';'),
-    'SPACE': new TokenType('SPACE', '[ \\n\\t\\r ]'),
+    'SPACE': new TokenType('SPACE', '[ \\n\\t\\r]+'),
     'ASSIGN': new TokenType('ASSIGN', '='),
     'PLUS': new TokenType('PLUS', '\\+'),
     'MINUS': new TokenType('MINUS', '\\-'),
     'LEFT_PARENTHESES': new TokenType('LEFT_PARENTHESES', '\\('),
-    'RIGHT_PARENTHESES': new TokenType('RIGHT_PARENTHESES', '\\)')
-}
+    'RIGHT_PARENTHESES': new TokenType('RIGHT_PARENTHESES', '\\)'),
+    'STRING': new TokenType('STRING', "'[^']*'")
+};

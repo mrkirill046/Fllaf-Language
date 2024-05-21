@@ -1,2 +1,5 @@
 var = 12 + 1221 - (46736 + 76767);
+pr = 'Hello';
 log((var + 1) - 7676);
+log(pr);
+log('World!');

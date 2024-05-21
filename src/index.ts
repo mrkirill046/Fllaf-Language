@@ -45,7 +45,6 @@ if (filename) {
                 code = input;
                 startInterpreter(code);
 
-                // запрашиваем следующую команду
                 getInput();
             } else {
                 rl.close();

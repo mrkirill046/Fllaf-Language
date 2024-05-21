@@ -4,6 +4,7 @@ import ExpressionNode from './AST/expressionNode';
 import StatementsNode from './AST/statementsNode';
 import NumberNode from './AST/numberNode';
 import VariableNode from './AST/variableNode';
+import StringNode from './AST/stringNode';
 import BinaryOperationNode from './AST/binaryOperationNode';
 import UnaryOperationNode from './AST/unaryOperationNode';
 
@@ -39,9 +40,10 @@ export default class Parser {
         return token;
     }
 
-    parseVariableOrNumber(): ExpressionNode {
+    parseVariableOrNumberOrString(): ExpressionNode {
         const number = this.match(tokenTypeList.NUMBER);
         const variable = this.match(tokenTypeList.VARIABLE);
+        const str = this.match(tokenTypeList.STRING);
 
         if (number != null) {
             return new NumberNode(number);
@@ -51,16 +53,20 @@ export default class Parser {
             return new VariableNode(variable);
         }
 
-        throw new Error(`A variable or number is expected at position: ${this.position}`)
+        if (str != null) {
+            return new StringNode(str);
+        }
+
+        throw new Error(`A variable, number, or string is expected at position: ${this.position}`)
     }
 
     parsePrint(): ExpressionNode {
         const operatorLog = this.match(tokenTypeList.LOG);
-        
+
         if (operatorLog != null) {
-            this.require(tokenTypeList.LEFT_PARENTHES);
-            const expr = this.parseFormula();  
-            this.require(tokenTypeList.RIGHT_PARENTHES);
+            this.require(tokenTypeList.LEFT_PARENTHESES);
+            const expr = this.parseFormula();
+            this.require(tokenTypeList.RIGHT_PARENTHESES);
 
             return new UnaryOperationNode(operatorLog, expr);
         }
@@ -69,22 +75,26 @@ export default class Parser {
     }
 
     parseParentheses(): ExpressionNode {
-        if (this.match(tokenTypeList.LEFT_PARENTHES) != null) {
+        if (this.match(tokenTypeList.LEFT_PARENTHESES) != null) {
             const node = this.parseFormula();
-            this.require(tokenTypeList.RIGHT_PARENTHES);
+            this.require(tokenTypeList.RIGHT_PARENTHESES);
 
             return node;
         } else {
-            return this.parseVariableOrNumber();
+            return this.parseVariableOrNumberOrString();
         }
     }
 
     parseFormula(): ExpressionNode {
         let leftNode = this.parseParentheses();
-        let operator= this.match(tokenTypeList.MINUS, tokenTypeList.PLUS);
+        let operator = this.match(tokenTypeList.MINUS, tokenTypeList.PLUS);
 
         while (operator != null) {
             const rightNode = this.parseParentheses();
+
+            if ((leftNode instanceof StringNode || rightNode instanceof StringNode) && (operator.type.name === tokenTypeList.PLUS.name || operator.type.name === tokenTypeList.MINUS.name)) {
+                throw new Error(`String and number can't be added or subtracted at position: ${this.position}`);
+            }
 
             leftNode = new BinaryOperationNode(operator, leftNode, rightNode);
             operator = this.match(tokenTypeList.MINUS, tokenTypeList.PLUS);
@@ -100,7 +110,7 @@ export default class Parser {
         }
 
         this.position -= 1;
-        let variableNode = this.parseVariableOrNumber();
+        let variableNode = this.parseVariableOrNumberOrString();
         const assignOperator = this.match(tokenTypeList.ASSIGN);
 
         if (assignOperator != null) {
@@ -109,7 +119,6 @@ export default class Parser {
 
             return binaryNode;
         }
-
         throw new Error(`After the variable, an assignment operator is expected at position: ${this.position}`)
     }
 
@@ -128,6 +137,10 @@ export default class Parser {
     run(node: ExpressionNode): any {
         if (node instanceof NumberNode) {
             return parseInt(node.number.text);
+        }
+
+        if (node instanceof StringNode) {
+            return node.string.text.slice(1, -1);
         }
 
         if (node instanceof UnaryOperationNode) {

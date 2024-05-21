@@ -13,7 +13,7 @@ export default class Lexer {
     lexerAnalyze(): Token[] {
         while (this.nextToken()) {}
         this.tokenList = this.tokenList.filter(token => token.type.name !== tokenTypeList.SPACE.name);
-        
+
         return this.tokenList;
     }
 
@@ -37,7 +37,7 @@ export default class Lexer {
                 return true;
             }
         }
-       
+
         throw new Error(`At position: ${this.position} detected error!`);
     }
 }
